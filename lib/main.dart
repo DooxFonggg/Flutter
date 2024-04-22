@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-      home: Scaffold(
-    appBar: AppBar(title: Text('Fong app')),
+      home: SafeArea(
+          child: Scaffold(
+    appBar: AppBar(
+      title: Text('fong app'),
+    ),
     body: Body(),
-  )));
+  ))));
 }
 
 class Body extends StatelessWidget {
@@ -14,23 +17,24 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: 200,
-        height: 200,
-        child: Text('hello im fong'),
-        // color: Colors.amberAccent,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue, width: 10),
-            color: Colors.green,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(8, 8),
-                color: Colors.pink,
-                blurRadius: 10,
-              )
-            ]),
+        child: RichText(
+            text: TextSpan(children: [
+      TextSpan(
+        text: 'hello',
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 30,
+        ),
       ),
-    );
+      TextSpan(
+          text: ' World',
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: 30,
+          )),
+      TextSpan(
+          text: '\nIm Fong đz',
+          style: TextStyle(color: Colors.black, fontSize: 30))
+    ])));
   }
 }
