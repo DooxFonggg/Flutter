@@ -1,12 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
       home: SafeArea(
           child: Scaffold(
-    appBar: AppBar(
-      title: Text('fong app'),
-    ),
+    appBar: AppBar(title: Text('App Fong')),
     body: Body(),
   ))));
 }
@@ -17,24 +16,21 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: RichText(
-            text: TextSpan(children: [
-      TextSpan(
-        text: 'hello',
-        style: TextStyle(
-          color: Colors.red,
-          fontSize: 30,
+      child: Container(
+        child: OutlinedButton(
+          onPressed: () => print('Hello'),
+          child: Text('Click me'),
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.black,
+            padding: EdgeInsets.all(20),
+            textStyle: TextStyle(fontSize: 20, color: Colors.blue),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(80),
+            ),
+          ),
         ),
       ),
-      TextSpan(
-          text: ' World',
-          style: TextStyle(
-            color: Colors.red,
-            fontSize: 30,
-          )),
-      TextSpan(
-          text: '\nIm Fong đz',
-          style: TextStyle(color: Colors.black, fontSize: 30))
-    ])));
+    );
   }
 }
