@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
       home: SafeArea(
           child: Scaffold(
-    appBar: AppBar(title: Text('App Fong')),
     body: Body(),
   ))));
 }
@@ -15,21 +13,53 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: OutlinedButton(
-          onPressed: () => print('Hello'),
-          child: Text('Click me'),
-          style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.black,
-            padding: EdgeInsets.all(20),
-            textStyle: TextStyle(fontSize: 20, color: Colors.blue),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(80),
+    return Container(
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: EdgeInsets.only(top: 20),
+              child: Column(
+                children: [Text('Home'), Text("About"), Text("Contact")],
+              ),
             ),
           ),
-        ),
+          Expanded(
+            flex: 3,
+            child: Container(
+                padding: EdgeInsets.only(top: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text("yyyy/mm/dd"),
+                        Expanded(
+                            flex: 2,
+                            child: Container(
+                                child: Row(
+                              children: [Text("yyyy")],
+                            ))),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            child: Row(
+                              children: [Text("mm")],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            child: Text("dd"),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                )),
+          )
+        ],
       ),
     );
   }
