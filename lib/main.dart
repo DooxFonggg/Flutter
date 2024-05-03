@@ -2,69 +2,78 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: SafeArea(
-        child: Scaffold(
-      appBar: AppBar(title: Text('Hello World')),
-      body: Body2(),
-    )),
-  ));
+      home: SafeArea(
+          child: Scaffold(
+    appBar: AppBar(
+      title: Text('Hello World'),
+    ),
+    body: Body(10),
+  ))));
 }
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  int count = 0;
+  Body(this.count, {super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  int index = 0;
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 1,
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
-      padding: EdgeInsets.all(10),
+    return Column(
       children: [
         Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.red),
+          height: MediaQuery.sizeOf(context).height / 2,
+          child: PageView.builder(
+            itemCount: widget.count,
+            itemBuilder: (context, index) {
+              return Container(
+                color: index % 2 == 0 ? Colors.red : Colors.blue,
+                child: Text(
+                  "page $index",
+                  style: TextStyle(color: Colors.deepPurple, fontSize: 30),
+                ),
+                alignment: Alignment.center,
+              );
+            },
+            onPageChanged: (value) {
+              setState(() {
+                index = value;
+              });
+            },
+          ),
         ),
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.red),
-        ),
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.red),
-        ),
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.red),
-        )
+        PageIndicator(widget.count, index),
       ],
     );
   }
 }
 
-class Body2 extends StatelessWidget {
+class PageIndicator extends StatelessWidget {
+  int index = 0;
+  int count = 0;
+  PageIndicator(this.count, this.index, {super.key});
+
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 100,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        childAspectRatio: 1 / 0.5,
+    return Container(
+      height: MediaQuery.sizeOf(context).height / 3,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (int i = 0; i < count; i++)
+            Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                  color: i == index ? Colors.green : Colors.grey,
+                  shape: BoxShape.circle),
+            ),
+        ],
       ),
-      itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.red),
-        );
-      },
-      itemCount: 10,
     );
   }
 }
