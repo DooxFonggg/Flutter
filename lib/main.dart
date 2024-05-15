@@ -1,78 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class countCubit extends Cubit<int> {
+  countCubit() : super(0);
+  void increment() => emit(state + 1);
+}
 
 void main() {
   runApp(MaterialApp(
-      home: SafeArea(
-          child: Scaffold(
-    appBar: AppBar(
-      title: Text('Hello World'),
-    ),
-    body: Body(10),
-  ))));
+    debugShowCheckedModeBanner: false,
+    home: SafeArea(child: Page()),
+  ));
 }
 
-class Body extends StatefulWidget {
-  int count = 0;
-  Body(this.count, {super.key});
-
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  int index = 0;
+class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: MediaQuery.sizeOf(context).height / 2,
-          child: PageView.builder(
-            itemCount: widget.count,
-            itemBuilder: (context, index) {
-              return Container(
-                color: index % 2 == 0 ? Colors.red : Colors.blue,
-                child: Text(
-                  "page $index",
-                  style: TextStyle(color: Colors.deepPurple, fontSize: 30),
-                ),
-                alignment: Alignment.center,
-              );
-            },
-            onPageChanged: (value) {
-              setState(() {
-                index = value;
-              });
-            },
+    return BlocProvider(
+      create: (context) => countCubit(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('App fong'),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              BlocBuilder<countCubit, int>(
+                builder: (context, state) {
+                  return Container(
+                    child: Text(
+                      'Counter: $state',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  );
+                },
+              )
+
+              // Your other widgets here
+            ],
           ),
         ),
-        PageIndicator(widget.count, index),
-      ],
+        floatingActionButton: flBtn(),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.endFloat, // This line
+      ),
     );
   }
 }
 
-class PageIndicator extends StatelessWidget {
-  int index = 0;
-  int count = 0;
-  PageIndicator(this.count, this.index, {super.key});
-
+class flBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.sizeOf(context).height / 3,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (int i = 0; i < count; i++)
-            Container(
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(
-                  color: i == index ? Colors.green : Colors.grey,
-                  shape: BoxShape.circle),
-            ),
-        ],
+    return BlocProvider(
+      create: (context) => countCubit(),
+      child: FloatingActionButton(
+        onPressed: () {
+          context.read<countCubit>().increment();
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
