@@ -1,4 +1,5 @@
 import 'dart:isolate';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,11 +50,16 @@ class CounterBlocBloc extends Bloc<CounterBlocEvent, int> {
   CounterBlocBloc(this.S) : super(0) {
     S.getvalue().then((value) =>
         emit(value)); // lấy value từ shared preferences xong dưa vào emit
-    on<counterImplemet>((event, emit) {
-      //mỗi khi tiếp nhận sự kiện  tăng lên 1 giá trị và lưu vào shared preferences
-      S.savevalue(state + 1);
-      emit(state + 1);
-    });
+    on<counterImplemet>(
+      (event, emit) async {
+        await Future.delayed(Duration(seconds: 1));
+        //mỗi khi tiếp nhận sự kiện  tăng lên 1 giá trị và lưu vào shared preferences
+        S.savevalue(state + 1);
+        emit(state + 1);
+      },
+      // dợi
+      transformer: droppable(),
+    );
   }
 }
 
